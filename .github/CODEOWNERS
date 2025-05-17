@@ -1,0 +1,10 @@
+# Default owners for everything
+* @hubertlim
+
+# Infrastructure requires platform team review
+/infra/ @hubertlim
+/.github/workflows/ @hubertlim
+
+# Security-sensitive files
+/SECURITY.md @hubertlim
+/.github/workflows/scorecard.yml @hubertlim
