@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-config
+  namespace: ai-platform
+data:
+  APP_ENV: "staging"
+  AI_PROVIDER: "mock"
+  API_LOG_LEVEL: "info"
+  OTEL_SERVICE_NAME: "ai-platform-api"
