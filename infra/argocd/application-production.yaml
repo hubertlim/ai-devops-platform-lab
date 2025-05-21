@@ -1,0 +1,37 @@
+# Argo CD Application manifest - Production
+# Production uses manual sync to prevent accidental deployments.
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ai-platform-production
+  namespace: argocd
+  labels:
+    app.kubernetes.io/part-of: ai-devops-platform-lab
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/hubertlim/ai-devops-platform-lab.git
+    targetRevision: main
+    path: infra/k8s/overlays/production
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ai-platform
+
+  syncPolicy:
+    # Manual sync for production - no automated deployment
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+    retry:
+      limit: 3
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m
+
+  revisionHistoryLimit: 10

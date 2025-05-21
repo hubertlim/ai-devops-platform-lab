@@ -1,0 +1,28 @@
+# Argo CD AppProject - restricts what the application can deploy
+
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: ai-platform
+  namespace: argocd
+spec:
+  description: AI DevOps Platform Lab project
+
+  sourceRepos:
+    - "https://github.com/hubertlim/ai-devops-platform-lab.git"
+
+  destinations:
+    - namespace: ai-platform
+      server: https://kubernetes.default.svc
+
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+
+  namespaceResourceWhitelist:
+    - group: ""
+      kind: "*"
+    - group: apps
+      kind: "*"
+    - group: networking.k8s.io
+      kind: "*"
