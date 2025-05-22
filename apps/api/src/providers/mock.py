@@ -7,9 +7,21 @@ from src.providers.base import AIProvider
 
 # Predefined responses for common prompts (deterministic for testing)
 MOCK_RESPONSES = {
-    "hello": "Hello! I'm the AI DevOps Platform Lab mock provider. I can help you test the system without requiring real API keys.",
-    "explain kubernetes": "Kubernetes is a container orchestration platform that automates deployment, scaling, and management of containerized applications. It groups containers into logical units for easy management and discovery.",
-    "what is devops": "DevOps is a set of practices combining software development (Dev) and IT operations (Ops). It aims to shorten the development lifecycle while delivering features, fixes, and updates frequently in close alignment with business objectives.",
+    "hello": (
+        "Hello! I'm the AI DevOps Platform Lab mock provider. "
+        "I can help you test the system without requiring real API keys."
+    ),
+    "explain kubernetes": (
+        "Kubernetes is a container orchestration platform that automates "
+        "deployment, scaling, and management of containerized applications. "
+        "It groups containers into logical units for easy management and discovery."
+    ),
+    "what is devops": (
+        "DevOps is a set of practices combining software development (Dev) and "
+        "IT operations (Ops). It aims to shorten the development lifecycle while "
+        "delivering features, fixes, and updates frequently in close alignment "
+        "with business objectives."
+    ),
 }
 
 

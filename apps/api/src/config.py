@@ -1,10 +1,12 @@
 """Application configuration via environment variables."""
 
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     """Application settings loaded from environment."""
+
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
     app_env: str = "development"
     app_name: str = "ai-devops-platform-lab"
@@ -25,10 +27,6 @@ class Settings(BaseSettings):
     # Observability
     otel_exporter_otlp_endpoint: str = "http://localhost:4317"
     otel_service_name: str = "ai-platform-api"
-
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
 
 
 settings = Settings()
