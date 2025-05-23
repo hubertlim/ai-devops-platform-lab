@@ -1,10 +1,16 @@
 version: 2
 
 # Dependabot configuration
-# - Monthly cadence to reduce notification noise
-# - Grouped updates batch related packages into single PRs
-# - Major version bumps are ignored for stable libs to prevent breaking changes
-# - Open PR limits keep the queue manageable
+#
+# Goals:
+#   1. Keep dependencies fresh for security
+#   2. Minimize notification noise
+#
+# Strategy:
+#   - Monthly cadence (not weekly)
+#   - All minor and patch updates batched into a single grouped PR per ecosystem
+#   - All major version bumps ignored (handled manually when intentional)
+#   - Strict per-ecosystem PR limits
 
 updates:
   # ---------------------------------------------------------------------------
@@ -14,23 +20,19 @@ updates:
     directory: "/apps/api"
     schedule:
       interval: "monthly"
-    open-pull-requests-limit: 3
+    open-pull-requests-limit: 1
     labels:
       - "dependencies"
       - "python"
     groups:
-      python-minor-patch:
-        applies-to: version-updates
+      python-deps:
+        patterns:
+          - "*"
         update-types:
           - "minor"
           - "patch"
     ignore:
-      # Pin major versions for core framework stability
-      - dependency-name: "fastapi"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "pydantic"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "uvicorn"
+      - dependency-name: "*"
         update-types: ["version-update:semver-major"]
 
   # ---------------------------------------------------------------------------
@@ -40,34 +42,19 @@ updates:
     directory: "/apps/web"
     schedule:
       interval: "monthly"
-    open-pull-requests-limit: 3
+    open-pull-requests-limit: 1
     labels:
       - "dependencies"
       - "javascript"
     groups:
-      npm-minor-patch:
-        applies-to: version-updates
+      npm-deps:
+        patterns:
+          - "*"
         update-types:
           - "minor"
           - "patch"
     ignore:
-      # React major versions require manual migration
-      - dependency-name: "react"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "react-dom"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@types/react"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "@types/react-dom"
-        update-types: ["version-update:semver-major"]
-      # ESLint v9 requires flat config migration
-      - dependency-name: "eslint"
-        update-types: ["version-update:semver-major"]
-      # TypeScript major bumps can break type definitions
-      - dependency-name: "typescript"
-        update-types: ["version-update:semver-major"]
-      # Vitest major bumps occasionally change config API
-      - dependency-name: "vitest"
+      - dependency-name: "*"
         update-types: ["version-update:semver-major"]
 
   # ---------------------------------------------------------------------------
@@ -77,13 +64,12 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
-    open-pull-requests-limit: 3
+    open-pull-requests-limit: 1
     labels:
       - "dependencies"
       - "ci"
     groups:
       github-actions:
-        applies-to: version-updates
         patterns:
           - "*"
 
@@ -96,17 +82,19 @@ updates:
       - "/apps/web"
     schedule:
       interval: "monthly"
-    open-pull-requests-limit: 2
+    open-pull-requests-limit: 1
     labels:
       - "dependencies"
       - "docker"
+    groups:
+      docker-images:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
     ignore:
-      # Pin major versions of base images to avoid breaking builds
-      - dependency-name: "python"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "node"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "nginx"
+      - dependency-name: "*"
         update-types: ["version-update:semver-major"]
 
   # ---------------------------------------------------------------------------
@@ -116,12 +104,17 @@ updates:
     directory: "/infra/terraform"
     schedule:
       interval: "monthly"
-    open-pull-requests-limit: 2
+    open-pull-requests-limit: 1
     labels:
       - "dependencies"
       - "infrastructure"
     groups:
       terraform:
-        applies-to: version-updates
         patterns:
           - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
