@@ -1,4 +1,6 @@
-version: "3.9"
+# Compose file for local development
+# - API and web with hot reload
+# - Full observability stack (OTel Collector, Prometheus, Grafana)
 
 services:
   # ---------------------------------------------------------------------------
