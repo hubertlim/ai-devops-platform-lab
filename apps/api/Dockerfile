@@ -13,16 +13,16 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends curl && \
     rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY requirements.lock .
+RUN pip install --no-cache-dir --require-hashes -r requirements.lock
 
 # ---------------------------------------------------------------------------
 # Development stage: hot-reload with source mounted
 # ---------------------------------------------------------------------------
 FROM base AS development
 
-COPY requirements-dev.txt .
-RUN pip install --no-cache-dir -r requirements-dev.txt
+COPY requirements-dev.lock .
+RUN pip install --no-cache-dir --require-hashes --no-deps -r requirements-dev.lock
 
 COPY . .
 
