@@ -1,0 +1,106 @@
+name: Infrastructure Validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "infra/**"
+      - ".github/workflows/infra-validate.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "infra/**"
+      - ".github/workflows/infra-validate.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Terraform formatting and validation
+  # ---------------------------------------------------------------------------
+  terraform:
+    name: Terraform fmt & validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.0
+          terraform_wrapper: false
+
+      - name: Check Terraform formatting
+        run: terraform fmt -check -recursive
+        working-directory: infra/terraform
+
+      - name: Initialize Terraform (no backend)
+        run: terraform init -backend=false
+        working-directory: infra/terraform
+
+      - name: Validate Terraform configuration
+        run: terraform validate
+        working-directory: infra/terraform
+
+  # ---------------------------------------------------------------------------
+  # Static security scanning for IaC
+  # ---------------------------------------------------------------------------
+  tflint:
+    name: TFLint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Set up TFLint
+        uses: terraform-linters/setup-tflint@v4
+        with:
+          tflint_version: latest
+
+      - name: Run TFLint
+        run: |
+          tflint --init
+          tflint --recursive
+        working-directory: infra/terraform
+
+  # ---------------------------------------------------------------------------
+  # Kubernetes manifest validation
+  # ---------------------------------------------------------------------------
+  kubernetes:
+    name: Kustomize build & kubeconform
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    strategy:
+      matrix:
+        overlay: [staging, production]
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install kustomize
+        run: |
+          curl -sSL "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+          sudo mv kustomize /usr/local/bin/
+
+      - name: Install kubeconform
+        run: |
+          curl -sSL "https://github.com/yannh/kubeconform/releases/latest/download/kubeconform-linux-amd64.tar.gz" \
+            | tar xz
+          sudo mv kubeconform /usr/local/bin/
+
+      - name: Build manifests with kustomize
+        run: kustomize build infra/k8s/overlays/${{ matrix.overlay }} > /tmp/manifests.yaml
+
+      - name: Validate manifests with kubeconform
+        run: |
+          kubeconform \
+            -strict \
+            -summary \
+            -kubernetes-version 1.29.0 \
+            -schema-location default \
+            -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
+            /tmp/manifests.yaml
