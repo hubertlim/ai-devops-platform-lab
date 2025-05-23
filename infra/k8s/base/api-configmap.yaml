@@ -4,7 +4,7 @@ metadata:
   name: api-config
   namespace: ai-platform
 data:
-  APP_ENV: "staging"
+  APP_ENV: "development"
   AI_PROVIDER: "mock"
   API_LOG_LEVEL: "info"
   OTEL_SERVICE_NAME: "ai-platform-api"

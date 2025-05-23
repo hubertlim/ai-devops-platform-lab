@@ -12,5 +12,7 @@ resources:
   - web-deployment.yaml
   - web-service.yaml
 
-commonLabels:
-  app.kubernetes.io/managed-by: kustomize
+labels:
+  - includeSelectors: false
+    pairs:
+      app.kubernetes.io/managed-by: kustomize
