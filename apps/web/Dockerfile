@@ -5,7 +5,7 @@
 # ---------------------------------------------------------------------------
 # Base stage: install dependencies
 # ---------------------------------------------------------------------------
-FROM node:20-alpine AS base
+FROM node:20-alpine@sha256:afdf98210b07b586eb71fa22ba2e432e058e4cd1304d31ed60888755b8c865fb AS base
 
 WORKDIR /app
 
@@ -34,7 +34,7 @@ RUN npm run build
 # ---------------------------------------------------------------------------
 # Production stage: serve static files with nginx
 # ---------------------------------------------------------------------------
-FROM nginx:1.25-alpine AS production
+FROM nginx:1.25-alpine@sha256:721fa00bc549df26b3e67cc558ff176112d4ba69847537766f3c28e171d180e7 AS production
 
 RUN apk add --no-cache curl
 
