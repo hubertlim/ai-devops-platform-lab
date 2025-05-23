@@ -237,14 +237,8 @@ Argo CD watches this repository and auto-syncs Kubernetes manifests when changes
 
 ## Screenshots
 
-> *Screenshots will be added after initial deployment*
-
-| View | Description |
-|------|-------------|
-| ![Frontend](docs/screenshots/frontend.png) | AI chat interface |
-| ![Grafana](docs/screenshots/grafana.png) | Observability dashboard |
-| ![CI](docs/screenshots/ci-pipeline.png) | GitHub Actions pipeline |
-| ![ArgoCD](docs/screenshots/argocd.png) | GitOps sync status |
+> Screenshots will be added once the project is deployed to a live environment.
+> The local stack (Frontend, API docs at `/docs`, Grafana, Prometheus) is fully functional via `make up`.
 
 ---
 
