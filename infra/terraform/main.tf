@@ -70,13 +70,13 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 21.22"
 
-  cluster_name    = "${var.project_name}-${var.environment}"
-  cluster_version = "1.29"
+  name               = "${var.project_name}-${var.environment}"
+  kubernetes_version = "1.29"
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
-  cluster_endpoint_public_access = var.environment != "production"
+  endpoint_public_access = var.environment != "production"
 
   eks_managed_node_groups = {
     default = {
