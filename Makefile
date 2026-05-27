@@ -84,3 +84,14 @@ tf-plan: ## Plan Terraform changes
 
 tf-apply: ## Apply Terraform changes
 	cd infra/terraform && terraform apply tfplan
+
+# ---------------------------------------------------------------------------
+# Dependency Lock Files
+# ---------------------------------------------------------------------------
+
+lock-deps: ## Regenerate hash-locked Python requirements files
+	docker run --rm -v $(PWD)/apps/api:/app -w /app python:3.12-slim \
+		sh -c "pip install pip-tools && \
+		pip-compile --generate-hashes --output-file=requirements.lock requirements.txt && \
+		pip-compile --generate-hashes --output-file=requirements-dev.lock requirements-dev.txt && \
+		pip-compile --generate-hashes --output-file=requirements-ci.lock requirements-ci.txt"

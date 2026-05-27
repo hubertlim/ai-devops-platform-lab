@@ -39,7 +39,7 @@ jobs:
 
       - name: Lint backend (Ruff)
         run: |
-          pip install ruff
+          pip install --require-hashes --no-deps -r apps/api/requirements-ci.lock
           ruff check apps/api/src/ apps/api/tests/
 
       - name: Install frontend dependencies
@@ -76,8 +76,8 @@ jobs:
 
       - name: Install backend dependencies
         run: |
-          pip install -r apps/api/requirements.txt
-          pip install -r apps/api/requirements-dev.txt
+          pip install --require-hashes -r apps/api/requirements.lock
+          pip install --require-hashes --no-deps -r apps/api/requirements-dev.lock
 
       - name: Run backend tests
         run: pytest tests/ -v --tb=short
@@ -114,8 +114,8 @@ jobs:
 
       - name: Scan Python dependencies
         run: |
-          pip install pip-audit
-          pip-audit -r apps/api/requirements.txt
+          pip install --require-hashes --no-deps -r apps/api/requirements-ci.lock
+          pip-audit -r apps/api/requirements.lock --require-hashes
         continue-on-error: true
 
       - name: Scan Node dependencies
