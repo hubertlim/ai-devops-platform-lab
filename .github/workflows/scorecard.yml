@@ -26,7 +26,10 @@ jobs:
         with:
           results_file: results.sarif
           results_format: sarif
-          publish_results: true
+          # publish_results requires sigstore verification of this exact action
+          # commit. Disabled because SHA-pinned references trip imposter-commit
+          # checks on the public webapp. Local SARIF upload still works.
+          publish_results: false
 
       - name: Upload Scorecard results
         uses: github/codeql-action/upload-sarif@dc73d59c2d7bd4f8194098a91219eeee6d8a1719 # v4.32.7
