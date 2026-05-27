@@ -91,11 +91,15 @@ updates:
         patterns:
           - "*"
         update-types:
-          - "minor"
           - "patch"
     ignore:
+      # Block all major and minor bumps. Language and base-image minor
+      # versions can introduce wheel incompatibilities (e.g. python 3.14
+      # lacks prebuilt wheels for pydantic-core). Patch updates are safe.
       - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
+        update-types:
+          - "version-update:semver-major"
+          - "version-update:semver-minor"
 
   # ---------------------------------------------------------------------------
   # Terraform
