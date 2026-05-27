@@ -34,7 +34,7 @@ RUN npm run build
 # ---------------------------------------------------------------------------
 # Production stage: serve static files with nginx
 # ---------------------------------------------------------------------------
-FROM nginx:1.25-alpine AS production
+FROM nginx:1.31-alpine AS production
 
 RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
