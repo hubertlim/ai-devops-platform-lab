@@ -1,6 +1,6 @@
 pytest==8.2.0
 pytest-asyncio==0.23.6
-pytest-cov==5.0.0
+pytest-cov==7.1.0
 httpx==0.28.1
 ruff==0.4.3
 pip-audit==2.7.2
