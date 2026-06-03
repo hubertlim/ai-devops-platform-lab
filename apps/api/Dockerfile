@@ -5,7 +5,7 @@
 # ---------------------------------------------------------------------------
 # Base stage: shared dependencies
 # ---------------------------------------------------------------------------
-FROM python:3.12-slim@sha256:866411c135b507754efdf2fda51484be4d3d7d5173ed53cd083106132e710904 AS base
+FROM python:3.12-slim@sha256:090ba77e2958f6af52a5341f788b50b032dd4ca28377d2893dcf1ecbdfdfe203 AS base
 
 WORKDIR /app
 
