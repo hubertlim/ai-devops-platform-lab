@@ -1,6 +1,6 @@
 # CI-only tools used by GitHub Actions workflows.
 # Pinned versions (no hashes needed since these are not application dependencies
 # but we keep them pinned for reproducibility and to satisfy Scorecard pinning).
-ruff==0.15.14
-pip-audit==2.10.0
-pip-tools==7.5.1
+ruff==0.15.20
+pip-audit==2.10.1
+pip-tools==7.5.3
